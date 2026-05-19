@@ -6,20 +6,23 @@
 #    By: qixu <qixu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/19 16:13:21 by quewonchin        #+#    #+#              #
-#    Updated: 2026/05/19 19:31:40 by qixu             ###   ########.fr        #
+#    Updated: 2026/05/19 19:52:46 by qixu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC	= cc
-CFLAGS	= -Wall -Werror -Wextra -I. -L/usr/local/lib -I/usr/local/include -lreadline
+CFLAGS	= -Wall -Werror -Wextra -I.
+READLINE_FLAGS	= -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include -lreadline
 CFILES	= minishell.c
 OFILES	= $(CFILES:.c=.o)
 
 .PHONY:	all clean fclean re
 
+all: $(NAME)
+
 $(NAME): $(OFILES)
-	$(CC) $(CFLAGS) -o $(NAME) $(OFILES)
+	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $(NAME) $(OFILES)
 
 clean:
 	rm -f $(OFILES)
