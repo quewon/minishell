@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qixu <qixu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/19 16:25:02 by quewonchin        #+#    #+#             */
-/*   Updated: 2026/05/19 19:05:05 by qixu             ###   ########.fr       */
+/*   Created: 2026/05/19 16:54:49 by qixu              #+#    #+#             */
+/*   Updated: 2026/05/19 19:01:39 by qixu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	main(void)
-{
-	char	*buffer;
+# include "lib/libft/libft.h"
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-	buffer = readline("$ ");
-	printf("%s", buffer);
-}
+#endif

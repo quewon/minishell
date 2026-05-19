@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: quewonchin <marvin@42.fr>                  +#+  +:+       +#+         #
+#    By: qixu <qixu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/19 16:13:21 by quewonchin        #+#    #+#              #
-#    Updated: 2026/05/19 16:23:40 by quewonchin       ###   ########.fr        #
+#    Updated: 2026/05/19 19:11:07 by qixu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OFILES	= $(CFILES:.c=.o)
 
 .PHONY:	all clean fclean re
 
-$(NAME):
+$(NAME): $(OFILES)
 	$(CC) -o $(NAME) $(OFILES)
 
 clean:
