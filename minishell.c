@@ -16,7 +16,7 @@ void	init_token(t_token *token, int datasize)
 {
 	token->data = malloc(datasize + 1);
 	token->data[0] = 0;
-	// tok->type = 0;
+	token->type = 0;
 	token->next = NULL;
 }
 
@@ -48,8 +48,12 @@ t_token	*split_tokens(char *buffer, int size)
 	{
 		c = buffer[i];
 
-		if (c == '\"')
+		if (c == '\"' || c == '\'')
 		{
+			if (c == '\"')
+				token->type = 1;
+			else
+				token->type = 2;
 			if (state == 0)
 			{
 				state = 1;
@@ -77,6 +81,26 @@ t_token	*split_tokens(char *buffer, int size)
 	return (list);
 }
 
+void	parse_tokens(t_token *token)
+{
+	char	*var;
+	char	*value;
+	char	*beforevar;
+
+	while (token)
+	{
+		if (token->type <= 1)
+		{
+			var = ft_strchr(token->data, '$');
+			if (var != NULL)
+				value = getenv(var + 1);
+			else
+				value = "";
+		}
+		token = token->next;
+	}
+}
+
 void run(t_token *token)
 {
 	t_token	*command;
@@ -91,10 +115,10 @@ void run(t_token *token)
 	}
 
 	// single quotes and double quotes
+	// environment variables ($)
 	// pathnames
 	// redirections (<, >, <<, >>)
 	// pipes (|)
-	// environment variables ($)
 	// $?
 	// commands: echo, cd, pwd, export, unset, env, exit
 }
@@ -106,5 +130,6 @@ int	main(void)
 
 	buffer = readline("$ ");
 	tokens = split_tokens(buffer, 1000);
-	run(tokens);
+	parse_tokens(tokens);
+	// run(tokens);
 }
