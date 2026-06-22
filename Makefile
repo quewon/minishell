@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 NAME	= minishell
-CC	= cc
+CC		= cc
+LIBFT	= lib/libft
 CFLAGS	= -Wall -Werror -Wextra -I.
 READLINE_FLAGS	= -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include -lreadline
 CFILES	= minishell.c
@@ -22,12 +23,14 @@ OFILES	= $(CFILES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OFILES)
-	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $(NAME) $(OFILES) -Llib/libft -lft
+	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $(NAME) $(OFILES) -L$(LIBFT) -lft
 
 clean:
 	rm -f $(OFILES)
+	make clean -C $(LIBFT)
 
 fclean: clean
 	rm -f ./$(NAME)
+	make fclean -C $(LIBFT)
 
 re: fclean all
