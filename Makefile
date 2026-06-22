@@ -22,7 +22,7 @@ OFILES	= $(CFILES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OFILES)
-	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $(NAME) $(OFILES)
+	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $(NAME) $(OFILES) -Llib/libft -lft
 
 clean:
 	rm -f $(OFILES)
