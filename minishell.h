@@ -20,4 +20,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_token {
+    char    *data;
+    int     type;
+    struct s_token *next;
+} t_token;
+
 #endif

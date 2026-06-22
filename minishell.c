@@ -12,27 +12,99 @@
 
 #include "minishell.h"
 
-void run(char **tokens)
+void	init_token(t_token *token, int datasize)
 {
-	char	*command;
-	char	*argument;
+	token->data = malloc(datasize + 1);
+	token->data[0] = 0;
+	// tok->type = 0;
+	token->next = NULL;
+}
 
-	command = tokens[0];
-	argument = tokens[1];
-	
-	if (ft_strncmp(command, "echo", ft_strlen(command)) == 0)
+void	print_tokens(t_token *token)
+{
+	while (token)
 	{
-		printf("%s", argument);
+		printf("[%s] ", token->data);
+		token = token->next;
 	}
+}
+
+t_token	*split_tokens(char *buffer, int size)
+{
+	int	i;
+	int	j;
+	char	c;
+	t_token	*token;
+	t_token	*list;
+	int	state;
+
+	token = malloc(sizeof(t_token));
+	init_token(token, size);
+	list = token;
+	i = 0;
+	j = 0;
+	state = 0; // 0: normal mode, 1: quoted mode
+	while (buffer[i] != '\0')
+	{
+		c = buffer[i];
+
+		if (c == '\"')
+		{
+			if (state == 0)
+			{
+				state = 1;
+			}
+			else
+			{
+				state = 0;
+			}
+		}
+		else if (state == 0 && c == ' ')
+		{
+			token->data[j] = 0;
+			j = 0;
+			token->next = malloc(sizeof(t_token));
+			token = token->next;
+			init_token(token, size);
+		}
+		else
+		{
+			token->data[j++] = c;
+		}
+
+		i++;
+	}
+	return (list);
+}
+
+void run(t_token *token)
+{
+	t_token	*command;
+	t_token	*argument;
+
+	command = token;
+	argument = token->next;
+	
+	if (ft_strncmp(command->data, "echo", ft_strlen(command->data)) == 0)
+	{
+		printf("%s", argument->data);
+	}
+
+	// single quotes and double quotes
+	// pathnames
+	// redirections (<, >, <<, >>)
+	// pipes (|)
+	// environment variables ($)
+	// $?
+	// commands: echo, cd, pwd, export, unset, env, exit
 }
 
 int	main(void)
 {
 	char	*buffer;
-	char	**tokens;
+	t_token	*tokens;
 
 	buffer = readline("$ ");
-	tokens = ft_split(buffer, ' ');
-
+	tokens = split_tokens(buffer, 1000);
 	run(tokens);
 }

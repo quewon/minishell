@@ -23,6 +23,7 @@ OFILES	= $(CFILES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OFILES)
+	make -C $(LIBFT)
 	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $(NAME) $(OFILES) -L$(LIBFT) -lft
 
 clean:
