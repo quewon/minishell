@@ -26,4 +26,24 @@ typedef struct s_token {
     struct s_token *next;
 } t_token;
 
+typedef struct s_simple_command {
+    char    *pathname;
+    t_token *tokenlist;
+} t_simple_command;
+typedef struct s_command {
+    t_simple_command    *command;
+    t_token             *redirect;
+    char                *filename;
+} t_command;
+typedef struct s_job {
+    t_command       *command;
+    t_token         *pipe;
+    struct s_job    *job;
+} t_job;
+
+void	print_tokens(t_token *token);
+void	print_job(int indent, t_job *job);
+t_token	*tokenize(char *buffer);
+t_job	*parse_tokens(t_token *token);
+
 #endif

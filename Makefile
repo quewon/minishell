@@ -15,7 +15,7 @@ CC		= cc
 LIBFT	= lib/libft
 CFLAGS	= -Wall -Werror -Wextra -I.
 READLINE_FLAGS	= -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include -lreadline
-CFILES	= minishell.c
+CFILES	= minishell.c tokenize.c parse_tokens.c debug.c
 OFILES	= $(CFILES:.c=.o)
 
 .PHONY:	all clean fclean re
