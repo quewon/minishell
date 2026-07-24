@@ -12,40 +12,23 @@
 
 #include "minishell.h"
 
-void run(t_token *token)
-{
-	t_token	*command;
-	t_token	*argument;
-
-	command = token;
-	argument = token->next;
-	
-	if (ft_strncmp(command->data, "echo", ft_strlen(command->data)) == 0)
-	{
-		printf("%s", argument->data);
-	}
-
-	// single quotes and double quotes
-	// environment variables ($)
-	// pathnames
-	// redirections (<, >, <<, >>)
-	// pipes (|)
-	// $?
-	// commands: echo, cd, pwd, export, unset, env, exit
-}
-
 int	main(void)
 {
 	char	*buffer;
 	t_token	*tokens;
+	t_job	*job;
+	char	*output;
 
 	while (1)
 	{
 		buffer = readline("$ ");
 		tokens = tokenize(buffer);
-		parse_tokens(tokens);
-		// run(tokens);
+		job = parse_tokens(tokens);
+		output = run_job(job, NULL);
+		if (output)
+			printf("%s", output);
+		else
+			printf("\n");
 	}
-
 	return (EXIT_SUCCESS);
 }

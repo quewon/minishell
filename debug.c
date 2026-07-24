@@ -14,9 +14,20 @@
 
 void	print_tokens(t_token *token)
 {
+    t_fragment  *fragment;
+
 	while (token)
 	{
-		printf("[%s] ", token->data);
+        printf("[");
+        fragment = token->fragments;
+        while (fragment)
+        {
+            printf("%s", fragment->data);
+            if (fragment->next)
+                printf("|");
+            fragment = fragment->next;
+        }
+        printf("] ");
 		token = token->next;
 	}
 }
@@ -47,9 +58,15 @@ static void	print_command(int indent, t_command *command)
     indent += 2;
     print_simple_command(indent, command->command);
     if (command->redirect == NULL)
+    {
         printf("%*sredirect: NULL\n", indent, "");
+    }
     else
-        printf("%*sredirect: [%s]\n", indent, "", command->redirect->data);
+    {
+        printf("%*sredirect: ", indent, "");
+        print_tokens(command->redirect);
+        printf("\n");
+    }
     if (command->filename)
         printf("%*sfilename: [%s]\n", indent, "", command->filename);
     else
@@ -67,8 +84,14 @@ void	print_job(int indent, t_job *job)
     indent += 2;
 	print_command(indent, job->command);
     if (job->pipe == NULL)
+    {
         printf("%*spipe: NULL\n", indent, "");
+    }
     else
-        printf("%*spipe: [%s]\n", indent, "", job->pipe->data);
+    {
+        printf("%*spipe: ", indent, "");
+        print_tokens(job->pipe);
+        printf("\n");
+    }
     print_job(indent, job->job);
 }

@@ -12,6 +12,26 @@
 
 #include "minishell.h"
 
+static char	*flatten_token(t_token *token)
+{
+	char		*str;
+	t_fragment	*fragment;
+
+	str = NULL;
+	fragment = token->fragments;
+	while (fragment)
+	{
+		if (!str) {
+			str = malloc(ft_strlen(fragment->data));
+			ft_strlcpy(str, fragment->data, ft_strlen(fragment->data) + 1);
+		} else {
+			ft_strcat(&str, fragment->data);
+		}
+		fragment = fragment->next;
+	}
+	return (str);
+}
+
 static t_job	*new_job()
 {
 	t_job	*job;
@@ -39,12 +59,9 @@ static t_command	*new_command()
 static t_token	*copy_token(t_token *token)
 {
 	t_token *copy;
-	int		size;
 
 	copy = malloc(sizeof(t_token));
-	size = ft_strlen(token->data);
-	copy->data = malloc(size + 1);
-	ft_strlcpy(copy->data, token->data, size + 1);
+	copy->fragments = token->fragments;
 	copy->type = token->type;
 	copy->next = NULL;
 	return (copy);
@@ -75,7 +92,7 @@ t_job	*parse_tokens(t_token *token)
 			{
 				current_job->command = new_command();
 				scommand = current_job->command->command;
-				scommand->pathname = token->data;
+				scommand->pathname = flatten_token(token);
 			}
 			else if (current_job->command->redirect == NULL)
 			{
@@ -86,14 +103,14 @@ t_job	*parse_tokens(t_token *token)
 			}
 			else
 			{
-				current_job->command->filename = token->data;
+				current_job->command->filename = flatten_token(token);
 			}
 		}
 		else if (token->type == 1 || token->type == 2 || token->type == '>' || token->type == '<')
 		{
 			if (current_job->command == NULL)
 				current_job->command = new_command();
-			current_job->command->redirect = token;
+			current_job->command->redirect = copy_token(token);
 		}
 		else if (token->type == '|')
 		{
@@ -103,7 +120,7 @@ t_job	*parse_tokens(t_token *token)
 			}
 			else
 			{
-				current_job->pipe = token;
+				current_job->pipe = copy_token(token);
 				current_job->job = new_job();
 				current_job = new_job();
 			}

@@ -14,15 +14,22 @@
 # define MINISHELL_H
 
 # include "lib/libft/libft.h"
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_fragment {
+    char                *data;
+    int                 expandable;
+    struct s_fragment   *next;
+} t_fragment;
 typedef struct s_token {
-    char    *data;
-    int     type;
+    t_fragment     *fragments;
+    int            type;
     struct s_token *next;
 } t_token;
 
@@ -45,5 +52,6 @@ void	print_tokens(t_token *token);
 void	print_job(int indent, t_job *job);
 t_token	*tokenize(char *buffer);
 t_job	*parse_tokens(t_token *token);
+char    *run_job(t_job *job, char *input);
 
 #endif
