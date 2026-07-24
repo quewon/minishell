@@ -51,6 +51,7 @@ typedef struct s_job {
 void	print_tokens(t_token *token);
 void	print_job(int indent, t_job *job);
 t_token	*tokenize(char *buffer);
+char	*flatten_token(t_token *token);
 t_job	*parse_tokens(t_token *token);
 char    *run_job(t_job *job, char *input);
 

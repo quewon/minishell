@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-static char	*flatten_token(t_token *token)
+char	*flatten_token(t_token *token)
 {
+	char		*expanded;
 	char		*str;
 	t_fragment	*fragment;
 
@@ -21,11 +22,18 @@ static char	*flatten_token(t_token *token)
 	fragment = token->fragments;
 	while (fragment)
 	{
-		if (!str) {
-			str = malloc(ft_strlen(fragment->data));
-			ft_strlcpy(str, fragment->data, ft_strlen(fragment->data) + 1);
-		} else {
-			ft_strcat(&str, fragment->data);
+		expanded = fragment->data;
+		if (fragment->data[0] == '$' && fragment->expandable)
+		{
+			expanded = getenv(fragment->data + 1);
+		}
+		if (!str)
+		{
+			str = malloc(ft_strlen(expanded));
+			ft_strlcpy(str, fragment->data, ft_strlen(expanded) + 1);
+		} else
+		{
+			ft_strcat(&str, expanded);
 		}
 		fragment = fragment->next;
 	}

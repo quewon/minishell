@@ -3,10 +3,25 @@
 static char *run_scommand(t_simple_command *command, char *input)
 {
     char    *output;
+    pid_t   pid;
 
     output = NULL;
-    (void)command;
-    (void)input;
+    pid = fork();
+    if (pid == 0)
+    {
+        static char *newargv[] = { NULL, "hello", "world", NULL };
+        static char *newenviron[] = { NULL };
+        execve(command->pathname, newargv, newenviron);
+        (void)input;
+    }
+    else if (pid < 0)
+    {
+        // error
+    }
+    else
+    {
+        while (waitpid(pid, NULL, 0) <= 0);
+    }
     return (output);
 }
 

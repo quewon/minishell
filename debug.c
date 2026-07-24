@@ -14,20 +14,21 @@
 
 void	print_tokens(t_token *token)
 {
-    t_fragment  *fragment;
+    // t_fragment  *fragment;
 
 	while (token)
 	{
-        printf("[");
-        fragment = token->fragments;
-        while (fragment)
-        {
-            printf("%s", fragment->data);
-            if (fragment->next)
-                printf("|");
-            fragment = fragment->next;
-        }
-        printf("] ");
+        // printf("[");
+        // fragment = token->fragments;
+        // while (fragment)
+        // {
+        //     printf("%s", fragment->data);
+        //     if (fragment->next)
+        //         printf("|");
+        //     fragment = fragment->next;
+        // }
+        // printf("] ");
+        printf("[%s] ", flatten_token(token));
 		token = token->next;
 	}
 }

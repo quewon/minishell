@@ -22,6 +22,9 @@ int	main(void)
 	while (1)
 	{
 		buffer = readline("$ ");
+		if (buffer == NULL) {
+			break ;
+		}
 		tokens = tokenize(buffer);
 		job = parse_tokens(tokens);
 		output = run_job(job, NULL);

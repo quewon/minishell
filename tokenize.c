@@ -167,7 +167,7 @@ t_token	*tokenize(char *buffer)
 	}
 	if (f > 0)
 		add_fragment(token, fragment);
-	print_tokens(list);
-	printf("\n");
+	// print_tokens(list);
+	// printf("\n");
 	return (list);
 }
